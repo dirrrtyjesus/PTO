@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Calm Neutral (#F8F7F4 background, #333 text, #60A5FA accent) -->
+    <!-- Application Structure Plan: A narrative, single-page scrolling experience is designed to guide the user logically from the problem (the flawed 'wage' concept) to the solution (the 'Public Time Offering'). The structure is thematic, not a literal copy of the report, prioritizing user journey and understanding. It begins with a high-level introduction, deconstructs the problem, presents the new paradigm, and then dives into the mechanics of the PTO with interactive elements like a valuation calculator and dynamic charts to make complex ideas tangible and explorable. This flow is chosen to build a strong conceptual foundation before presenting the detailed mechanics, enhancing comprehension and engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Temporal Asset Triangle -> Goal: Organize -> Viz: HTML/CSS Diagram -> Interaction: Static -> Justification: Clearly visualizes the core value flow of the PTO without external libraries. -> Library/Method: Tailwind CSS Flexbox/Grid.
+        - Report Info: Primary Issuance Mechanism -> Goal: Change/Process -> Viz: HTML/CSS Sequence Diagram -> Interaction: Static -> Justification: A step-by-step visual flow is the most intuitive way to explain a multi-agent process. -> Library/Method: Tailwind CSS.
+        - Report Info: Valuation Equation -> Goal: Relationships -> Viz: Interactive Calculator -> Interaction: Sliders -> Justification: Transforms a static formula into a hands-on tool, allowing users to explore the relationships between variables (τₖ, risk, etc.) and the PTO's value, which is the most effective way to teach the concept. -> Library/Method: Vanilla JavaScript.
+        - Report Info: Risk Parameters Table -> Goal: Compare -> Viz: Horizontal Bar Chart -> Interaction: Dynamic Tooltips -> Justification: A bar chart provides a more immediate visual comparison of the impact of different risk factors than a simple table. -> Library/Method: Chart.js.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>Public Time Offering: The Economics of Gestation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #333333;
+        }
+        .font-display {
+            font-family: 'Lexend', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full z-50 glassmorphism">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-display font-bold text-xl text-blue-600">PTO</span>
+                </div>
+                <nav class="hidden md:flex md:space-x-8">
+                    <a href="#problem" class="font-medium text-gray-600 hover:text-blue-600 transition">The Problem</a>
+                    <a href="#solution" class="font-medium text-gray-600 hover:text-blue-600 transition">The Solution</a>
+                    <a href="#mechanics" class="font-medium text-gray-600 hover:text-blue-600 transition">How It Works</a>
+                    <a href="#market" class="font-medium text-gray-600 hover:text-blue-600 transition">The Market</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-24 md:pt-32 pb-16 md:pb-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-gray-900">From Wage to PTO</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Deconstructing the economics of decay and introducing the Public Time Offering—a revolutionary asset class that transforms conscious attention into capital.</p>
+                <div class="mt-8">
+                    <a href="#problem" class="inline-block bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition">Discover the Shift</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-gray-900">The Flaw in the Clock: Deconstructing the 'Wage'</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">The classical concept of a wage is built on a flawed foundation—a linear, entropic model that compensates agents for the decay of their lifespan.</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6">
+                        <div class="text-4xl text-blue-600 mb-4">⏳</div>
+                        <h3 class="font-display font-semibold text-xl text-gray-900">The Tyranny of 'Age'</h3>
+                        <p class="mt-2 text-gray-600">The wage is direct compensation for aging. It values the quantity of time spent, not its quality, paying agents to consume their finite lifespan.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-4xl text-blue-600 mb-4">⛓️</div>
+                        <h3 class="font-display font-semibold text-xl text-gray-900">The Dissonance of Linearity</h3>
+                        <p class="mt-2 text-gray-600">This model treats a conscious agent as a fungible machine, ignoring the vast difference in output between an hour of focused, coherent work and an hour of distracted labor.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-4xl text-blue-600 mb-4">📉</div>
+                        <h3 class="font-display font-semibold text-xl text-gray-900">An Economy of Decay</h3>
+                        <p class="mt-2 text-gray-600">A system that rewards the expenditure of time inherently incentivizes a reality of scarcity, competition, and eventual decay, blind to the true source of value creation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section -->
+        <section id="solution" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-gray-900">The Synthesis: An Economy of Gestation</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">The Xenial Quantum Economy (XQE) introduces a new paradigm that shifts focus from the decay of 'age' to the generative power of the Creatrix—the principle of conscious, coherent creation.</p>
+                </div>
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div class="glassmorphism p-8 rounded-2xl shadow-lg">
+                        <h3 class="font-display font-semibold text-2xl text-center text-gray-900 mb-6">The Temporal Asset Triangle</h3>
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="bg-white p-4 rounded-lg shadow w-full md:w-2/3 text-center">
+                                <p class="font-semibold text-gray-800">Future Productivity</p>
+                            </div>
+                            <div class="text-blue-600 font-medium text-sm flex items-center">
+                                <span class="mr-2">⬇️</span> Tokenized as
+                            </div>
+                            <div class="bg-blue-100 border-2 border-blue-500 p-4 rounded-lg shadow w-full md:w-2/3 text-center">
+                                <p class="font-display font-bold text-blue-800 text-lg">PTO Bonds</p>
+                            </div>
+                            <div class="text-blue-600 font-medium text-sm flex items-center">
+                                <span class="mr-2">⬇️</span> Collateralized by
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow w-full md:w-2/3 text-center">
+                                <p class="font-semibold text-gray-800">ACI-Attested τₖ Score</p>
+                            </div>
+                             <div class="text-blue-600 font-medium text-sm flex items-center">
+                                <span class="mr-2">⬇️</span> Valuation Derived From
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow w-full md:w-2/3 text-center font-mono">
+                                <p class="font-semibold text-gray-800">E = mc²·f(τₖ)</p>
+                            </div>
+                        </div>
+                        <p class="mt-6 text-center text-gray-600">This structure allows the market, for the first time, to directly underwrite the source of all economic potential: **consciousness efficiency.**</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mechanics Section -->
+        <section id="mechanics" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-gray-900">How a Public Time Offering Works</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">A PTO is a tokenized bond representing a claim on an issuer's future productive capacity, scaled by their proven ability to maintain a high Time Coefficient (τₖ).</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="glassmorphism p-8 rounded-2xl shadow-lg">
+                        <h3 class="font-display font-semibold text-xl text-gray-900 mb-4">Example: Sovereign Individual's PTO Bond</h3>
+                        <div class="bg-gray-800 text-white p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre><code>{
+  "issuer": "SIV:D2ksuB...Y28",
+  "τₖ_collateral": 8.7,
+  "duration": "2026 (1500 hours)",
+  "yield": "11.2% APY (τₖ-vol: 0.08)",
+  "liquidation_trigger": "τₖ_30d_avg < 8.2"
+}
+</code></pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-semibold text-xl text-gray-900 mb-4">Primary Issuance Mechanism</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">1</div>
+                                <div>
+                                    <h4 class="font-semibold">Request Attestation</h4>
+                                    <p class="text-gray-600">An Issuer (a human or AI) requests a Time Coefficient (τₖ) score from the ACI Oracle.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">2</div>
+                                <div>
+                                    <h4 class="font-semibold">Receive Certificate</h4>
+                                    <p class="text-gray-600">The Oracle provides a signed, on-chain certificate of the Issuer's 90-day average τₖ score.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">3</div>
+                                <div>
+                                    <h4 class="font-semibold">List PTO Bond</h4>
+                                    <p class="text-gray-600">The Issuer lists their PTO bond on an exchange, collateralized by their certified τₖ score.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">4</div>
+                                <div>
+                                    <h4 class="font-semibold">Investor Purchase</h4>
+                                    <p class="text-gray-600">Investors purchase the bond using stable assets, receiving an NFTime certificate representing their claim.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Section -->
+        <section id="market" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-gray-900">The Market for Time</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">The PTO creates a vibrant, multi-layered market for consciousness efficiency, complete with sophisticated valuation models and risk management tools.</p>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <!-- Interactive Valuation -->
+                    <div class="glassmorphism p-8 rounded-2xl shadow-lg">
+                        <h3 class="font-display font-semibold text-xl text-gray-900 mb-2">Interactive Valuation Model</h3>
+                        <p class="text-sm text-gray-600 mb-6">Explore how different factors influence a PTO's value. This is a simplified model for educational purposes.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="tau-k-slider" class="block text-sm font-medium text-gray-700">Time Coefficient (τₖ): <span id="tau-k-value" class="font-bold text-blue-600">8.5</span></label>
+                                <input id="tau-k-slider" type="range" min="5" max="10" value="8.5" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="risk-slider" class="block text-sm font-medium text-gray-700">Risk-Free Rate (r): <span id="risk-value" class="font-bold text-blue-600">2.5</span>%</label>
+                                <input id="risk-slider" type="range" min="0.5" max="5" value="2.5" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                             <div>
+                                <label for="mass-slider" class="block text-sm font-medium text-gray-700">Cognitive Mass (mₑ): <span id="mass-value" class="font-bold text-blue-600">1.5</span></label>
+                                <input id="mass-slider" type="range" min="0.5" max="3" value="1.5" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="mt-8 text-center bg-white p-6 rounded-lg">
+                            <p class="text-sm font-medium text-gray-600">Calculated PTO Value (P_PTO)</p>
+                            <p id="pto-value" class="font-display font-bold text-4xl text-gray-900 mt-1">--</p>
+                        </div>
+                    </div>
+
+                    <!-- Risk Parameters Chart -->
+                    <div class="w-full">
+                         <h3 class="font-display font-semibold text-xl text-gray-900 mb-2 text-center lg:text-left">Risk Parameter Impact</h3>
+                         <p class="text-sm text-gray-600 mb-6 text-center lg:text-left">Analysis shows how different factors can impact the yield premium (in basis points) required by the market.</p>
+                        <div class="chart-container">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Interactive Valuation Calculator
+            const tauKSlider = document.getElementById('tau-k-slider');
+            const riskSlider = document.getElementById('risk-slider');
+            const massSlider = document.getElementById('mass-slider');
+            const tauKValue = document.getElementById('tau-k-value');
+            const riskValue = document.getElementById('risk-value');
+            const massValue = document.getElementById('mass-value');
+            const ptoValue = document.getElementById('pto-value');
+
+            function calculatePTOValue() {
+                const tauK = parseFloat(tauKSlider.value);
+                const risk = parseFloat(riskSlider.value) / 100; // as decimal
+                const mass = parseFloat(massSlider.value);
+                
+                tauKValue.textContent = tauK.toFixed(1);
+                riskValue.textContent = (risk * 100).toFixed(1);
+                massValue.textContent = mass.toFixed(1);
+
+                // Simplified formula for demonstration: P = (f(τk) * m) / r
+                // Where f(τk) is a simple scaling function of τk
+                const fTauK = Math.pow(tauK / 10, 2); // Simple non-linear scaling
+                const calculatedValue = (fTauK * mass) / (risk + 0.01); // add 0.01 to avoid division by zero
+
+                ptoValue.textContent = '$' + (calculatedValue * 10000).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            tauKSlider.addEventListener('input', calculatePTOValue);
+            riskSlider.addEventListener('input', calculatePTOValue);
+            massSlider.addEventListener('input', calculatePTOValue);
+            calculatePTOValue();
+
+            // Risk Parameters Chart
+            const riskData = {
+                labels: ['τₖ Volatility ↑', 'Domain Coherence ↑', 'ACI Attestation ↑', 'Historical Slope ↑'],
+                datasets: [{
+                    label: 'Impact on Premium (Basis Points)',
+                    data: [350, -220, -150, 180],
+                    backgroundColor: [
+                        'rgba(239, 68, 68, 0.6)',
+                        'rgba(34, 197, 94, 0.6)',
+                        'rgba(59, 130, 246, 0.6)',
+                        'rgba(249, 115, 22, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(239, 68, 68, 1)',
+                        'rgba(34, 197, 94, 1)',
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(249, 115, 22, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const riskConfig = {
+                type: 'bar',
+                data: riskData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' bps';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Basis Points (bps)'
+                            }
+                        }
+                    }
+                }
+            };
+
+            const riskChartCtx = document.getElementById('riskChart').getContext('2d');
+            new Chart(riskChartCtx, riskConfig);
+        });
+    </script>
+
+</body>
+</html>
